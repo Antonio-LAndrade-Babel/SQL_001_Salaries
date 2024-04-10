@@ -5,6 +5,7 @@ import com.helloworld.salaries.exceptions.WrongParamsException;
 import com.helloworld.salaries.mappers.EmployeeMapper;
 import com.helloworld.salaries.mappers.SalaryMapper;
 import com.helloworld.salaries.model.Employee;
+import com.helloworld.salaries.model.Salary;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<Double> getEmployeeSalariesByYear(String employeeCode, int year) throws WrongParamsException {
+    public List<Salary> getEmployeeSalariesByYear(String employeeCode, int year) throws WrongParamsException {
         return employeeMapper.getEmployeeSalariesByYear(employeeCode, year);
     }
 
@@ -49,9 +50,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void updateMonthlySalary(String employeeCode, double salary, int year, int month) throws WrongParamsException {
+    public Salary updateMonthlySalary(String employeeCode, double salary, int year, int month) throws WrongParamsException {
         if (salary < 0) throw new WrongParamsException("The salary shall not be negative");
         salaryMapper.updateMonthlySalary(employeeCode, salary, year, month);
+        return salaryMapper.findSalaryEmployeeByCodeAndMonth(employeeCode, month, year);
     }
-
 }

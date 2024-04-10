@@ -1,5 +1,6 @@
 package com.helloworld.salaries.mappers;
 
+import com.helloworld.salaries.model.Employee;
 import com.helloworld.salaries.model.Salary;
 import org.apache.ibatis.annotations.*;
 
@@ -24,4 +25,7 @@ public interface SalaryMapper {
 
     @Update("UPDATE salary SET SALARY = #{salary} WHERE CODEMPLEADO = #{codEmpleado} AND SALARYYEAR = #{year} AND SALARYMONTH = #{month}")
     void updateMonthlySalary(@Param("codEmpleado") String codEmpleado, @Param("salary") double salary, @Param("year") int year, @Param("month") int month);
+
+    @Select("SELECT * FROM salary WHERE CODEMPLEADO = #{codEmpleado} AND SALARYYEAR = #{year} AND SALARYMONTH = #{month}")
+    Salary findSalaryEmployeeByCodeAndMonth(@Param("codEmpleado") String codEmpleado, @Param("month") int month, @Param("year") int year);
 }

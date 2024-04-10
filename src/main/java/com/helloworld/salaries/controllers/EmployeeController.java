@@ -3,6 +3,7 @@ package com.helloworld.salaries.controllers;
 import com.helloworld.salaries.company.salary.services.EmployeeService;
 import com.helloworld.salaries.exceptions.WrongParamsException;
 import com.helloworld.salaries.model.Employee;
+import com.helloworld.salaries.model.Salary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeCode}/salary/{year}")
-    public ResponseEntity<List<Double>> getEmployeeSalariesByYear(@PathVariable String employeeCode, @PathVariable int year) {
+    public ResponseEntity<List<Salary>> getEmployeeSalariesByYear(@PathVariable String employeeCode, @PathVariable int year) {
         try {
-            List<Double> salaries = employeeService.getEmployeeSalariesByYear(employeeCode, year);
+            List<Salary> salaries = employeeService.getEmployeeSalariesByYear(employeeCode, year);
             return ResponseEntity.ok().body(salaries);
         } catch (WrongParamsException e) {
             return ResponseEntity.badRequest().body(null);
@@ -57,10 +58,9 @@ public class EmployeeController {
     public ResponseEntity<?> updateMonthlySalary(@PathVariable String employeeCode,
                                                  @PathVariable int year,
                                                  @PathVariable int month,
-                                                 @RequestParam double salary) {
+                                                 @RequestBody Double salary) {
         try {
-            employeeService.updateMonthlySalary(employeeCode, salary, year, month);
-            return ResponseEntity.ok("Salary updated");
+            return ResponseEntity.ok(employeeService.updateMonthlySalary(employeeCode, salary, year, month));
         } catch (WrongParamsException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
